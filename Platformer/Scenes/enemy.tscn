@@ -1,0 +1,74 @@
+[gd_scene load_steps=10 format=3 uid="uid://b1e7ovkrhp0dk"]
+
+[ext_resource type="Texture2D" uid="uid://do64er24ofgep" path="res://Assets/sprites/slime_green.png" id="1_7p5oh"]
+[ext_resource type="Script" path="res://Scripts/Enemy.cs" id="2_cp3j0"]
+[ext_resource type="PackedScene" uid="uid://cqhnkefbokybd" path="res://Scenes/KillZone.tscn" id="3_rrf63"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0swt"]
+atlas = ExtResource("1_7p5oh")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oh4sg"]
+atlas = ExtResource("1_7p5oh")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7amn"]
+atlas = ExtResource("1_7p5oh")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_stiax"]
+atlas = ExtResource("1_7p5oh")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3v1jl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f0swt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oh4sg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7amn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_stiax")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wcsrx"]
+size = Vector2(10, 12)
+
+[node name="Enemy" type="AnimatedSprite2D" node_paths=PackedStringArray("rayright", "rayleft")]
+sprite_frames = SubResource("SpriteFrames_3v1jl")
+animation = &"idle"
+frame_progress = 0.335222
+script = ExtResource("2_cp3j0")
+speed = 2
+rayright = NodePath("RayRight")
+rayleft = NodePath("RayLeft")
+
+[node name="KillZone" parent="." instance=ExtResource("3_rrf63")]
+
+[node name="CollisionShape2D" parent="KillZone" index="0"]
+position = Vector2(0, 6)
+shape = SubResource("RectangleShape2D_wcsrx")
+
+[node name="Timer" parent="KillZone" index="1"]
+wait_time = 0.5
+
+[node name="RayRight" type="RayCast2D" parent="."]
+position = Vector2(0, 6)
+target_position = Vector2(11, 0)
+collision_mask = 2
+
+[node name="RayLeft" type="RayCast2D" parent="."]
+position = Vector2(0, 6)
+target_position = Vector2(-11, 0)
+collision_mask = 2
+
+[editable path="KillZone"]
